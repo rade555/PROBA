@@ -31,6 +31,7 @@ Linker script and memory map
 
 Address of section .data set to 0x800100
 LOAD c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm328p.o
+LOAD ./input_event.o
 LOAD ./keypad.o
 LOAD ./main.o
 LOAD ./output_event.o
@@ -131,7 +132,7 @@ LOAD c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a
 .rela.plt
  *(.rela.plt)
 
-.text           0x00000000      0x95a
+.text           0x00000000      0x9f2
  *(.vectors)
  .vectors       0x00000000       0x68 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm328p.o
                 0x00000000                __vectors
@@ -211,6 +212,7 @@ LOAD c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a
                 0x000000a2                __vector_10
                 0x000000a2                __vector_16
                 0x000000a2                __vector_20
+ .text          0x000000a6        0x0 ./input_event.o
  .text          0x000000a6        0x0 ./keypad.o
  .text          0x000000a6        0x0 ./main.o
  .text          0x000000a6        0x0 ./output_event.o
@@ -223,92 +225,92 @@ LOAD c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a
  .text          0x000000a6        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_clear_bss.o)
                 0x000000a6                . = ALIGN (0x2)
  *(.text.*)
- .text.keypadScan
-                0x000000a6      0x24c ./keypad.o
-                0x000000a6                keypadScan
- .text.keypadInit
-                0x000002f2       0xb4 ./keypad.o
-                0x000002f2                keypadInit
- .text.timer0Init
-                0x000003a6       0x14 ./main.o
-                0x000003a6                timer0Init
- .text.secPass  0x000003ba       0x42 ./main.o
-                0x000003ba                secPass
- .text.main     0x000003fc       0x1c ./main.o
-                0x000003fc                main
+ .text.secPass  0x000000a6       0x42 ./input_event.o
+                0x000000a6                secPass
  .text.checkKeypad
-                0x00000418       0x6e ./main.o
-                0x00000418                checkKeypad
+                0x000000e8       0x6a ./input_event.o
+                0x000000e8                checkKeypad
+ .text.keypadScan
+                0x00000152      0x24c ./keypad.o
+                0x00000152                keypadScan
+ .text.keypadInit
+                0x0000039e       0xb4 ./keypad.o
+                0x0000039e                keypadInit
+ .text.timer0Init
+                0x00000452       0x14 ./main.o
+                0x00000452                timer0Init
+ .text.main     0x00000466       0xb8 ./main.o
+                0x00000466                main
  .text.calculateHalfPeriod
-                0x00000486       0x12 ./output_event.o
-                0x00000486                calculateHalfPeriod
- .text.ledOn    0x00000498       0x16 ./output_event.o
-                0x00000498                ledOn
- .text.ledOff   0x000004ae       0x16 ./output_event.o
-                0x000004ae                ledOff
- .text.logCut   0x000004c4       0x16 ./output_event.o
-                0x000004c4                logCut
- .text.logTime  0x000004da       0x16 ./output_event.o
-                0x000004da                logTime
- .text.logTran  0x000004f0       0x16 ./output_event.o
-                0x000004f0                logTran
+                0x0000051e       0x12 ./output_event.o
+                0x0000051e                calculateHalfPeriod
  .text.pinPulse
-                0x00000506       0x4a ./output_event.o
-                0x00000506                pinPulse
+                0x00000530       0x4a ./output_event.o
+                0x00000530                pinPulse
  .text.pinPulsing
-                0x00000550       0x40 ./output_event.o
-                0x00000550                pinPulsing
+                0x0000057a       0x40 ./output_event.o
+                0x0000057a                pinPulsing
  .text.ledBlink
-                0x00000590       0x22 ./output_event.o
-                0x00000590                ledBlink
+                0x000005ba       0x22 ./output_event.o
+                0x000005ba                ledBlink
+ .text.ledOn    0x000005dc       0x16 ./output_event.o
+                0x000005dc                ledOn
+ .text.ledOff   0x000005f2       0x16 ./output_event.o
+                0x000005f2                ledOff
+ .text.logCut   0x00000608       0x16 ./output_event.o
+                0x00000608                logCut
+ .text.logTime  0x0000061e       0x16 ./output_event.o
+                0x0000061e                logTime
+ .text.logTran  0x00000634       0x16 ./output_event.o
+                0x00000634                logTran
  .text.pinSetValue
-                0x000005b2       0xa6 ./pin.o
-                0x000005b2                pinSetValue
- .text.pinInit  0x00000658       0xa6 ./pin.o
-                0x00000658                pinInit
+                0x0000064a       0xa6 ./pin.o
+                0x0000064a                pinSetValue
+ .text.pinInit  0x000006f0       0xa6 ./pin.o
+                0x000006f0                pinInit
  .text.timer0DelayMs
-                0x000006fe       0x5c ./timer0.o
-                0x000006fe                timer0DelayMs
+                0x00000796       0x5c ./timer0.o
+                0x00000796                timer0DelayMs
  .text.timer0InteruptInit
-                0x0000075a       0x14 ./timer0.o
-                0x0000075a                timer0InteruptInit
+                0x000007f2       0x14 ./timer0.o
+                0x000007f2                timer0InteruptInit
  .text.__vector_14
-                0x0000076e       0x4a ./timer0.o
-                0x0000076e                __vector_14
+                0x00000806       0x4a ./timer0.o
+                0x00000806                __vector_14
  .text.__vector_18
-                0x000007b8       0x58 ./usart.o
-                0x000007b8                __vector_18
+                0x00000850       0x58 ./usart.o
+                0x00000850                __vector_18
  .text.usartInit
-                0x00000810       0x40 ./usart.o
-                0x00000810                usartInit
+                0x000008a8       0x40 ./usart.o
+                0x000008a8                usartInit
  .text.usartAvailable
-                0x00000850        0x6 ./usart.o
-                0x00000850                usartAvailable
+                0x000008e8        0x6 ./usart.o
+                0x000008e8                usartAvailable
  .text.usartPutChar
-                0x00000856       0x10 ./usart.o
-                0x00000856                usartPutChar
+                0x000008ee       0x10 ./usart.o
+                0x000008ee                usartPutChar
  .text.usartPutString
-                0x00000866       0x1a ./usart.o
-                0x00000866                usartPutString
+                0x000008fe       0x1a ./usart.o
+                0x000008fe                usartPutString
  .text.usartPutString_P
-                0x00000880       0x1e ./usart.o
-                0x00000880                usartPutString_P
+                0x00000918       0x1e ./usart.o
+                0x00000918                usartPutString_P
  .text.usartGetChar
-                0x0000089e       0x38 ./usart.o
-                0x0000089e                usartGetChar
+                0x00000936       0x38 ./usart.o
+                0x00000936                usartGetChar
  .text.usartGetString
-                0x000008d6       0x3c ./usart.o
-                0x000008d6                usartGetString
- .text.libgcc   0x00000912       0x44 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_udivmodsi4.o)
-                0x00000912                __udivmodsi4
- .text.libgcc   0x00000956        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_exit.o)
- .text.libgcc   0x00000956        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_copy_data.o)
- .text.libgcc   0x00000956        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_clear_bss.o)
-                0x00000956                . = ALIGN (0x2)
+                0x0000096e       0x3c ./usart.o
+                0x0000096e                usartGetString
+ .text.libgcc   0x000009aa       0x44 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_udivmodsi4.o)
+                0x000009aa                __udivmodsi4
+ .text.libgcc   0x000009ee        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_exit.o)
+ .text.libgcc   0x000009ee        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_copy_data.o)
+ .text.libgcc   0x000009ee        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_clear_bss.o)
+                0x000009ee                . = ALIGN (0x2)
  *(.fini9)
- .fini9         0x00000956        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_exit.o)
-                0x00000956                exit
-                0x00000956                _exit
+ .fini9         0x000009ee        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_exit.o)
+                0x000009ee                exit
+                0x000009ee                _exit
  *(.fini9)
  *(.fini8)
  *(.fini8)
@@ -327,75 +329,77 @@ LOAD c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a
  *(.fini1)
  *(.fini1)
  *(.fini0)
- .fini0         0x00000956        0x4 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_exit.o)
+ .fini0         0x000009ee        0x4 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_exit.o)
  *(.fini0)
-                0x0000095a                _etext = .
+                0x000009f2                _etext = .
 
-.data           0x00800100       0x42 load address 0x0000095a
+.data           0x00800100       0x4a load address 0x000009f2
                 0x00800100                PROVIDE (__data_start, .)
  *(.data)
  .data          0x00800100        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm328p.o
+ .data          0x00800100        0x0 ./input_event.o
  .data          0x00800100        0x0 ./keypad.o
  .data          0x00800100        0x0 ./main.o
- .data          0x00800100       0x41 ./output_event.o
- .data          0x00800141        0x0 ./pin.o
- .data          0x00800141        0x0 ./timer0.o
- .data          0x00800141        0x0 ./usart.o
- .data          0x00800141        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_udivmodsi4.o)
- .data          0x00800141        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_exit.o)
- .data          0x00800141        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_copy_data.o)
- .data          0x00800141        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_clear_bss.o)
+ .data          0x00800100       0x49 ./output_event.o
+ .data          0x00800149        0x0 ./pin.o
+ .data          0x00800149        0x0 ./timer0.o
+ .data          0x00800149        0x0 ./usart.o
+ .data          0x00800149        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_udivmodsi4.o)
+ .data          0x00800149        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_exit.o)
+ .data          0x00800149        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_copy_data.o)
+ .data          0x00800149        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_clear_bss.o)
  *(.data*)
  *(.rodata)
  *(.rodata*)
  *(.gnu.linkonce.d*)
-                0x00800142                . = ALIGN (0x2)
- *fill*         0x00800141        0x1 00
-                0x00800142                _edata = .
-                0x00800142                PROVIDE (__data_end, .)
+                0x0080014a                . = ALIGN (0x2)
+ *fill*         0x00800149        0x1 00
+                0x0080014a                _edata = .
+                0x0080014a                PROVIDE (__data_end, .)
 
-.bss            0x00800142       0x4f
-                0x00800142                PROVIDE (__bss_start, .)
+.bss            0x0080014a       0x4f
+                0x0080014a                PROVIDE (__bss_start, .)
  *(.bss)
- .bss           0x00800142        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm328p.o
- .bss           0x00800142        0x0 ./keypad.o
- .bss           0x00800142        0x0 ./main.o
- .bss           0x00800142        0x0 ./output_event.o
- .bss           0x00800142        0x0 ./pin.o
- .bss           0x00800142        0x0 ./timer0.o
- .bss           0x00800142        0x0 ./usart.o
- .bss           0x00800142        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_udivmodsi4.o)
- .bss           0x00800142        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_exit.o)
- .bss           0x00800142        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_copy_data.o)
- .bss           0x00800142        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_clear_bss.o)
+ .bss           0x0080014a        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm328p.o
+ .bss           0x0080014a        0x0 ./input_event.o
+ .bss           0x0080014a        0x0 ./keypad.o
+ .bss           0x0080014a        0x0 ./main.o
+ .bss           0x0080014a        0x0 ./output_event.o
+ .bss           0x0080014a        0x0 ./pin.o
+ .bss           0x0080014a        0x0 ./timer0.o
+ .bss           0x0080014a        0x0 ./usart.o
+ .bss           0x0080014a        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_udivmodsi4.o)
+ .bss           0x0080014a        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_exit.o)
+ .bss           0x0080014a        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_copy_data.o)
+ .bss           0x0080014a        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_clear_bss.o)
  *(.bss*)
- .bss.ms        0x00800142        0x4 ./timer0.o
-                0x00800142                ms
+ .bss.ms        0x0080014a        0x4 ./timer0.o
+                0x0080014a                ms
  .bss.Rx_Buffer_Size
-                0x00800146        0x1 ./usart.o
-                0x00800146                Rx_Buffer_Size
+                0x0080014e        0x1 ./usart.o
+                0x0080014e                Rx_Buffer_Size
  .bss.Rx_Buffer_First
-                0x00800147        0x1 ./usart.o
-                0x00800147                Rx_Buffer_First
+                0x0080014f        0x1 ./usart.o
+                0x0080014f                Rx_Buffer_First
  .bss.Rx_Buffer_Last
-                0x00800148        0x1 ./usart.o
-                0x00800148                Rx_Buffer_Last
+                0x00800150        0x1 ./usart.o
+                0x00800150                Rx_Buffer_Last
  *(COMMON)
- COMMON         0x00800149        0x8 ./keypad.o
-                0x00800149                _cols
-                0x0080014d                _rows
- COMMON         0x00800151       0x40 ./usart.o
-                0x00800151                Rx_Buffer
-                0x00800191                PROVIDE (__bss_end, .)
-                0x0000095a                __data_load_start = LOADADDR (.data)
-                0x0000099c                __data_load_end = (__data_load_start + SIZEOF (.data))
+ COMMON         0x00800151        0x8 ./keypad.o
+                0x00800151                _cols
+                0x00800155                _rows
+ COMMON         0x00800159       0x40 ./usart.o
+                0x00800159                Rx_Buffer
+                0x00800199                PROVIDE (__bss_end, .)
+                0x000009f2                __data_load_start = LOADADDR (.data)
+                0x00000a3c                __data_load_end = (__data_load_start + SIZEOF (.data))
 
-.noinit         0x00800191        0x0
-                0x00800191                PROVIDE (__noinit_start, .)
+.noinit         0x00800199        0x0
+                0x00800199                PROVIDE (__noinit_start, .)
  *(.noinit*)
-                0x00800191                PROVIDE (__noinit_end, .)
-                0x00800191                _end = .
-                0x00800191                PROVIDE (__heap_start, .)
+                0x00800199                PROVIDE (__noinit_end, .)
+                0x00800199                _end = .
+                0x00800199                PROVIDE (__heap_start, .)
 
 .eeprom         0x00810000        0x0
  *(.eeprom*)
@@ -473,5 +477,5 @@ LOAD c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a
 
 .debug_macinfo
  *(.debug_macinfo)
-OUTPUT(proba1.elf elf32-avr)
+OUTPUT(Zad1.elf elf32-avr)
 LOAD linker stubs

@@ -1,12 +1,14 @@
-main.o main.o: ../main.c ../usart.h ../keypad.h ../pin.h ../timer0.h \
-  ../output_event.h
-
-../usart.h:
+main.o main.o: ../main.c ../keypad.h ../pin.h ../timer0.h ../usart.h \
+  ../input_event.h ../output_event.h
 
 ../keypad.h:
 
 ../pin.h:
 
 ../timer0.h:
+
+../usart.h:
+
+../input_event.h:
 
 ../output_event.h:

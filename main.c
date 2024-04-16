@@ -1,75 +1,26 @@
-
-
-
-/**
-* @file main.c
-* @brief Zadatak
-* @author Radenko Vasic
-* @date 4.14.2024
-* @version 1.0
- */
-
-
 #include <avr/io.h>
+#include <stdint.h>
 #include <util/delay.h>
-#include "usart.h"
 #include "keypad.h"
 #include "pin.h"
 #include "timer0.h"
-#include <stdint.h>
+#include "usart.h"
+#include "input_event.h"
 #include "output_event.h"
 
 
-
-
-
-/**
- * Funkcija koja proverava da li je pritisnut taster c na matricnoj tastaturi
- * @param c- Ulaz tipa int8_t koji je zapravo taster c
- * @return - Vrednost 1,ukoliko jeste,odnosno vrednost 0 ukoliko nije
- *
- */
-uint8_t checkKeypad(int8_t c) {
-
-uint8_t rows[4] = {11,10,9,8};
-uint8_t cols[4] = {7,6,5,4};
-
-uint8_t button;
-usartInit(9600);
-keypadInit(rows,cols);
-while(1)
-{
-button = keypadScan();
-
-if (button == 0xF2)
-{
-return 1;
-}
-else
-{
-return 0;
-}
-}
-}
-
-
-
-
-
-/**Funkcija za rad sa prekidima
- *
- */
+/** Funkcija za rad sa prekidima
+	 *
+	 */
 	void timer0Init()
 	{
 		//tajmer0 u CTC mood
 		TCCR0A = 0x02;
-
-		//provera frekvencije takta tokom kompilacije
 		#if F_CPU > 20000000
-		#error "Frekvencija takta mora biti manja od 20MHz"
+		#error "Frekvencija takta mora biti manja od 20Mz"
 		#endif
 
-		//incijalizacija promenljivih za preskaler i periodu
+		//inicijalizacija promenljivih za preskaler i periodu
 		uint32_t n = F_CPU / 1000;
 		uint8_t clksel = 1;
 
@@ -82,7 +33,7 @@ return 0;
 
 		//tajmer/brojac modul 0: podesavanje preskalera
 		TCCR0B = clksel;
-		// tajmer/brojac modul 0: podesavanje periode
+		//tajmer/brojac modul 0: podesavanje periode
 		OCR0A = (uint8_t)(n & 0xff) - 1;
 		//tajmer/brojac modul 0 : dozvola prekida
 		TIMSK0 = 0x02;
@@ -90,63 +41,101 @@ return 0;
 		sei();
 	}
 
-
-/**
- * Funkcija koja proverava da li je protekla jedna sekunda od trenutka t0.
- * Trenutak to je izrazen u broju milisekundi proteklih od pokretanja tajmera 0.
- * @param- t0-Trenutak
- * return - Vrednost 1,ukoliko jeste,odnosno vrednost 0 ukoliko nije.
- */
-
-
-
-///Deklarisanje promeljvie ms koja se vec nalazi u timer.c fajlu
-extern volatile unsigned long ms;
-
-
-
-
-
-/**
- * Funkcija koja proverava da li je protekla jedna sekunda od trenutka t0.
- * Trenutak to je izrazen u broju milisekundi proteklih od pokretanja tajmera 0.
- * @param- t0-Trenutak
- * @return - Vrednost 1,ukoliko jeste,odnosno vrednost 0 ukoliko nije.
- */
-
-uint8_t secPass(uint32_t t0)
-{
-timer0Init();
-uint32_t proteklo_vreme = ms;
-if ((proteklo_vreme - t0) >= 1000)
-{
-return 1;
-}
-else
-{
-return 0;
-}
-
-}
-
-
-
-
-
 int main()
 {
+
 usartInit(9600);
-pinInit(PORT_B,DIODE_PIN,OUTPUT);
+pinInit(PORT_B, DIODE_PIN, OUTPUT);
 timer0Init();
+uint8_t c,s,m,x,t0;
+uint8_t min(uint8_t a, uint8_t b)
+{
+    return (a < b) ? a : b;
+}
+
+typedef enum state_t {ON, OFF, MINUTES_INPUT, SECONDS_INPUT, RUN} state_t;
+enum state_t state = ON;
+
+
+while(1)
+{
+
+	switch (state)
+	{
+		case ON:
+
+		while (usartAvailable() == 0) ;
+		c = usartGetChar ();
+		if (c == 'B')
+		{
+			ledOff();
+			logTran(ON, OFF);
+			state = OFF;
+		}
+		else if (c == 'C')
+		{
+			ledBlink();
+			s = 0;
+			logTran(ON, SECONDS_INPUT);
+			state = SECONDS_INPUT;
+		}
+		else
+		{
+			ledBlink();
+			m = 0;
+			logTran(ON, MINUTES_INPUT);
+			state = MINUTES_INPUT;
+		}
+		break;
+
+
+		case MINUTES_INPUT:
+
+				while (usartAvailable() == 0) ;
+				c = usartGetChar ();
+				if ('0' <= c && c <= '9' && m <= 99)
+				{
+					ledBlink();
+					x = min(m*10+c, 99);
+					logTime(m,s);
+					state = MINUTES_INPUT;
+				}
+				else if (c == 'B')
+				{
+					ledOff();
+					logTran(MINUTES_INPUT, OFF);
+					state = OFF;
+				}
+				else
+				{
+					ledBlink();
+					m = 0;
+					logTran(MINUTES_INPUT, SECONDS_INPUT);
+					state = SECONDS_INPUT;
+				}
+
+		break;
 
 
 
 
 
+		case RUN:
+			while (usartAvailable() == 0) ;
+			c = usartGetChar ();
+			if (secPass(t0) && s == 0)
+			{
+				ledBlink();
+				m--;
+				s = 59;
+				logTime(m,s);
+				state = RUN;
+			}
+
+		break;
+	}
 
 
-
-return 0;
 }
 
 
@@ -160,5 +149,6 @@ return 0;
 
 
 
+return 0;
 
-
+}
